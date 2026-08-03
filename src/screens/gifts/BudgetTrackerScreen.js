@@ -10,6 +10,23 @@ function BudgetTrackerScreen({ navigation }) {
   const totalSpent = state.budget.reduce((sum, b) => sum + b.spent, 0);
   const percent = totalBudget > 0 ? Math.min(100, Math.round(totalSpent / totalBudget * 100)) : 0;
   const personName = (id) => state.people.find((p) => p.id === id)?.name ?? "Unknown";
+  const addBudgetEntry = () => {
+    const person = state.people[0];
+    if (!person) {
+      Alert.alert("No people found", "Add a person first to create a budget entry.");
+      return;
+    }
+    dispatch({
+      type: "ADD_BUDGET_ENTRY",
+      value: {
+        id: `b-${Date.now()}`,
+        personId: person.id,
+        label: "New Budget",
+        amount: 100,
+        spent: 0
+      }
+    });
+  };
   return <ScrollView style={{ flex: 1, backgroundColor: theme.colors.background }} contentContainerStyle={{ paddingBottom: 60 }}>
       <View style={styles.header}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={12}>
@@ -158,20 +175,3 @@ const styles = StyleSheet.create({
 export {
   BudgetTrackerScreen as default
 };
-  const addBudgetEntry = () => {
-    const person = state.people[0];
-    if (!person) {
-      Alert.alert("No people found", "Add a person first to create a budget entry.");
-      return;
-    }
-    dispatch({
-      type: "ADD_BUDGET_ENTRY",
-      value: {
-        id: `b-${Date.now()}`,
-        personId: person.id,
-        label: "New Budget",
-        amount: 100,
-        spent: 0
-      }
-    });
-  };

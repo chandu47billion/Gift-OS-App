@@ -10,10 +10,17 @@ import CountdownCard from "../../components/home/CountdownCard";
 import GiftSuggestionCard from "../../components/home/GiftSuggestionCard";
 import QuickActions from "../../components/home/QuickActions";
 import Card from "../../components/common/Card";
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}
 function HomeScreen({ navigation }) {
   const theme = useTheme();
   const { state } = useAppStore();
-  const { people, reminders, isPremium, userName } = state;
+  const { people, reminders, isPremium, userName, notifications } = state;
+  const hasUnread = notifications.some((n) => !n.read);
   const upcoming = useMemo(() => {
     const list = [];
     people.forEach((p) => {
@@ -37,7 +44,7 @@ function HomeScreen({ navigation }) {
   return <ScrollView style={{ backgroundColor: theme.colors.background }} contentContainerStyle={styles.content}>
       <View style={styles.header}>
         <View>
-          <Text style={[styles.greeting, { color: theme.colors.text }]}>Good morning, {firstName} 👋</Text>
+          <Text style={[styles.greeting, { color: theme.colors.text }]}>{getGreeting()}, {firstName} 👋</Text>
           <Text style={[styles.dateText, { color: theme.colors.textSecondary }]}>
             {(/* @__PURE__ */ new Date()).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
           </Text>
@@ -47,7 +54,7 @@ function HomeScreen({ navigation }) {
     style={[styles.bellButton, { backgroundColor: theme.colors.card }, theme.shadows.sm]}
   >
           <Ionicons name="notifications-outline" size={22} color={theme.colors.text} />
-          <View style={styles.badgeDot} />
+          {hasUnread ? <View style={styles.badgeDot} /> : null}
         </Pressable>
       </View>
 

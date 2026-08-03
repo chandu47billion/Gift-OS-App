@@ -30,7 +30,7 @@ function CalendarScreen({ navigation }) {
   }, [state.people]);
   const occasionsInMonth = allOccasions.filter((o) => {
     const d = new Date(o.date);
-    return d.getMonth() === visibleMonth;
+    return d.getMonth() === visibleMonth && d.getFullYear() === visibleYear;
   });
   const daysInMonth = new Date(visibleYear, visibleMonth + 1, 0).getDate();
   const firstWeekday = new Date(visibleYear, visibleMonth, 1).getDay();

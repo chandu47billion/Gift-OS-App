@@ -62,6 +62,13 @@ function WishlistScreen({ navigation }) {
               <Pressable onPress={() => dispatch({ type: "TOGGLE_WISHLIST_PURCHASED", id: item.id })}>
                 <Badge label={item.purchased ? "Purchased" : "Mark Purchased"} variant={item.purchased ? "success" : "neutral"} />
               </Pressable>
+              <Pressable
+                onPress={() => dispatch({ type: "REMOVE_WISHLIST_ITEM", id: item.id })}
+                style={{ marginLeft: 8, padding: 4 }}
+                hitSlop={8}
+              >
+                <Ionicons name="trash-outline" size={18} color={theme.colors.error ?? "#FF7675"} />
+              </Pressable>
             </View>
           </Card>}
   />
