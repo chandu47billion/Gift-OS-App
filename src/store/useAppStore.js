@@ -1,27 +1,18 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, useReducer } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  people as seedPeople,
-  wishlist as seedWishlist,
-  giftHistory as seedHistory,
-  budget as seedBudget,
-  reminders as seedReminders,
-  notifications as seedNotifications,
-  giftSuggestions as seedGiftSuggestions
-} from "../data/mockData";
 const APP_STATE_STORAGE_KEY = "@gift-os/app-state";
 const APP_STATE_SCHEMA_VERSION = 1;
 const initialState = {
   isAuthenticated: false,
   hasOnboarded: false,
   themePreference: "system",
-  people: seedPeople,
-  wishlist: seedWishlist,
-  giftHistory: seedHistory,
-  budget: seedBudget,
-  reminders: seedReminders,
-  notifications: seedNotifications,
-  giftSuggestions: seedGiftSuggestions,
+  people: [],
+  wishlist: [],
+  giftHistory: [],
+  budget: [],
+  reminders: [],
+  notifications: [],
+  giftSuggestions: [],
   isPremium: false,
   userName: "Alex Rivera",
   userEmail: "alex.rivera@example.com",
