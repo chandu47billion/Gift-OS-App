@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Button from "../../components/common/Button";
+import { useTheme } from "../../hooks/useTheme";
 const { width } = Dimensions.get("window");
 const pages = [
   {
@@ -34,6 +35,7 @@ const pages = [
   }
 ];
 function OnboardingScreen({ navigation }) {
+  const theme = useTheme();
   const [index, setIndex] = useState(0);
   const listRef = useRef(null);
   const onScroll = (e) => {
@@ -48,7 +50,7 @@ function OnboardingScreen({ navigation }) {
     }
   };
   const skip = () => navigation.replace("Auth");
-  return <View style={styles.container}>
+  return <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlatList
     ref={listRef}
     data={pages}
@@ -91,8 +93,7 @@ function OnboardingScreen({ navigation }) {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#000"
+    flex: 1
   },
   page: {
     flex: 1,

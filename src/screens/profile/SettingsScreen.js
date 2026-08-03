@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Alert, Pressable, ScrollView, StyleSheet, Switch, Text, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useTheme } from "../../hooks/useTheme";
@@ -9,11 +9,18 @@ const themeOptions = [
   { key: "dark", label: "Dark", icon: "moon-outline" },
   { key: "system", label: "System", icon: "phone-portrait-outline" }
 ];
-function SettingsScreen({ navigation }) {
+function SettingsScreen({ navigation, route }) {
   const theme = useTheme();
   const { state, dispatch, resetPersistedState } = useAppStore();
-  const [analyticsEnabled, setAnalyticsEnabled] = useState(true);
-  const [autoBackup, setAutoBackup] = useState(true);
+  const scrollRef = useRef(null);
+  const [sectionOffsets, setSectionOffsets] = useState({});
+  const { settings } = state;
+  useEffect(() => {
+    const section = route?.params?.section;
+    if (section && typeof sectionOffsets[section] === "number") {
+      scrollRef.current?.scrollTo({ y: Math.max(0, sectionOffsets[section] - 12), animated: true });
+    }
+  }, [route?.params?.section, sectionOffsets]);
   const confirmResetPersistedData = () => {
     Alert.alert("Reset Local App Data", "This will clear all locally saved app data and restart onboarding.", [
       { text: "Cancel", style: "cancel" },
@@ -26,7 +33,11 @@ function SettingsScreen({ navigation }) {
       }
     ]);
   };
-  return <ScrollView style={{ flex: 1, backgroundColor: theme.colors.background }} contentContainerStyle={{ paddingBottom: 60 }}>
+  return <ScrollView
+    ref={scrollRef}
+    style={{ flex: 1, backgroundColor: theme.colors.background }}
+    contentContainerStyle={{ paddingBottom: 60 }}
+  >
       <View style={styles.header}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={12}>
           <Ionicons name="chevron-back" size={26} color={theme.colors.text} />
@@ -36,7 +47,9 @@ function SettingsScreen({ navigation }) {
       </View>
 
       <View style={styles.content}>
-        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Appearance</Text>
+        <View onLayout={(e) => setSectionOffsets((prev) => ({ ...prev, appearance: e.nativeEvent.layout.y }))}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Appearance</Text>
+        </View>
         <Card style={{ marginBottom: 24, flexDirection: "row", justifyContent: "space-between" }}>
           {themeOptions.map((opt) => <Pressable
     key={opt.key}
@@ -66,7 +79,9 @@ function SettingsScreen({ navigation }) {
             </Pressable>)}
         </Card>
 
-        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Privacy</Text>
+        <View onLayout={(e) => setSectionOffsets((prev) => ({ ...prev, privacy: e.nativeEvent.layout.y }))}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Privacy</Text>
+        </View>
         <Card style={{ marginBottom: 16 }}>
           <View style={styles.switchRow}>
             <View style={{ flex: 1 }}>
@@ -75,11 +90,17 @@ function SettingsScreen({ navigation }) {
                 Helps us improve gift suggestions.
               </Text>
             </View>
-            <Switch value={analyticsEnabled} onValueChange={setAnalyticsEnabled} trackColor={{ true: theme.colors.primary }} />
+            <Switch
+              value={settings.analyticsEnabled}
+              onValueChange={(value) => dispatch({ type: "SET_SETTING", key: "analyticsEnabled", value })}
+              trackColor={{ true: theme.colors.primary }}
+            />
           </View>
         </Card>
 
-        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Backup & Sync</Text>
+        <View onLayout={(e) => setSectionOffsets((prev) => ({ ...prev, backup: e.nativeEvent.layout.y }))}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Backup & Sync</Text>
+        </View>
         <Card style={{ marginBottom: 16 }}>
           <View style={styles.switchRow}>
             <View style={{ flex: 1 }}>
@@ -88,11 +109,17 @@ function SettingsScreen({ navigation }) {
                 Keep your people and gift data backed up to the cloud.
               </Text>
             </View>
-            <Switch value={autoBackup} onValueChange={setAutoBackup} trackColor={{ true: theme.colors.primary }} />
+            <Switch
+              value={settings.autoBackup}
+              onValueChange={(value) => dispatch({ type: "SET_SETTING", key: "autoBackup", value })}
+              trackColor={{ true: theme.colors.primary }}
+            />
           </View>
         </Card>
 
-        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Help & Support</Text>
+        <View onLayout={(e) => setSectionOffsets((prev) => ({ ...prev, help: e.nativeEvent.layout.y }))}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Help & Support</Text>
+        </View>
         <Pressable onPress={() => Alert.alert("Help Center", "Visit help.giftos.app for FAQs and guides.")}>
           <Card style={{ marginBottom: 10 }}>
             <View style={styles.switchRow}>

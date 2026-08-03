@@ -2,6 +2,7 @@ import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Button from "../../components/common/Button";
 import { useAppStore } from "../../store/useAppStore";
+import { useTheme } from "../../hooks/useTheme";
 const steps = [
   {
     icon: "\u{1F514}",
@@ -22,6 +23,7 @@ const steps = [
 function PermissionsScreen({ navigation }) {
   const [step, setStep] = useState(0);
   const { dispatch } = useAppStore();
+  const theme = useTheme();
   const current = steps[step];
   const finish = () => {
     dispatch({ type: "SET_AUTHENTICATED", value: true });
@@ -34,13 +36,13 @@ function PermissionsScreen({ navigation }) {
       finish();
     }
   };
-  return <View style={styles.container}>
+  return <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={styles.progressRow}>
         {steps.map((_, i) => <View
     key={i}
     style={[
       styles.progressDot,
-      { backgroundColor: i <= step ? "#6C5CE7" : "#E5E7EB" }
+      { backgroundColor: i <= step ? theme.colors.primary : theme.colors.border }
     ]}
   />)}
       </View>
@@ -49,8 +51,8 @@ function PermissionsScreen({ navigation }) {
         <View style={styles.iconWrap}>
           <Text style={styles.icon}>{current.icon}</Text>
         </View>
-        <Text style={styles.title}>{current.title}</Text>
-        <Text style={styles.description}>{current.description}</Text>
+        <Text style={[styles.title, { color: theme.colors.text }]}>{current.title}</Text>
+        <Text style={[styles.description, { color: theme.colors.textSecondary }]}>{current.description}</Text>
       </View>
 
       <View style={styles.actions}>
@@ -63,7 +65,6 @@ function PermissionsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     paddingHorizontal: 24,
     paddingTop: 80,
     paddingBottom: 40,
@@ -99,12 +100,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#111827",
     textAlign: "center"
   },
   description: {
     fontSize: 14,
-    color: "#6B7280",
     textAlign: "center",
     marginTop: 12,
     lineHeight: 20,

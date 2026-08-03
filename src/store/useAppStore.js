@@ -22,7 +22,15 @@ const initialState = {
   notifications: seedNotifications,
   isPremium: false,
   userName: "Alex Rivera",
-  userEmail: "alex.rivera@example.com"
+  userEmail: "alex.rivera@example.com",
+  settings: {
+    analyticsEnabled: true,
+    autoBackup: true,
+    pushNotificationsEnabled: true,
+    emailNotificationsEnabled: true,
+    smartRemindersEnabled: true,
+    defaultReminderLeadDays: 7
+  }
 };
 const noOpMigrationToV1 = (state) => state;
 const migrations = {
@@ -31,6 +39,14 @@ const migrations = {
 };
 function pickPersistedState(state) {
   const safeTheme = ["light", "dark", "system"].includes(state?.themePreference) ? state.themePreference : initialState.themePreference;
+  const settings = {
+    analyticsEnabled: typeof state?.settings?.analyticsEnabled === "boolean" ? state.settings.analyticsEnabled : initialState.settings.analyticsEnabled,
+    autoBackup: typeof state?.settings?.autoBackup === "boolean" ? state.settings.autoBackup : initialState.settings.autoBackup,
+    pushNotificationsEnabled: typeof state?.settings?.pushNotificationsEnabled === "boolean" ? state.settings.pushNotificationsEnabled : initialState.settings.pushNotificationsEnabled,
+    emailNotificationsEnabled: typeof state?.settings?.emailNotificationsEnabled === "boolean" ? state.settings.emailNotificationsEnabled : initialState.settings.emailNotificationsEnabled,
+    smartRemindersEnabled: typeof state?.settings?.smartRemindersEnabled === "boolean" ? state.settings.smartRemindersEnabled : initialState.settings.smartRemindersEnabled,
+    defaultReminderLeadDays: Number.isFinite(state?.settings?.defaultReminderLeadDays) ? state.settings.defaultReminderLeadDays : initialState.settings.defaultReminderLeadDays
+  };
   return {
     people: Array.isArray(state?.people) ? state.people : initialState.people,
     wishlist: Array.isArray(state?.wishlist) ? state.wishlist : initialState.wishlist,
@@ -43,7 +59,8 @@ function pickPersistedState(state) {
     hasOnboarded: typeof state?.hasOnboarded === "boolean" ? state.hasOnboarded : initialState.hasOnboarded,
     isPremium: typeof state?.isPremium === "boolean" ? state.isPremium : initialState.isPremium,
     userName: typeof state?.userName === "string" ? state.userName : initialState.userName,
-    userEmail: typeof state?.userEmail === "string" ? state.userEmail : initialState.userEmail
+    userEmail: typeof state?.userEmail === "string" ? state.userEmail : initialState.userEmail,
+    settings
   };
 }
 function safeParsePersistedPayload(raw) {
@@ -130,6 +147,11 @@ function reducer(state, action) {
       return { ...state, isPremium: action.value };
     case "SIGN_OUT":
       return { ...state, isAuthenticated: false };
+    case "SET_SETTING":
+      return {
+        ...state,
+        settings: { ...state.settings, [action.key]: action.value }
+      };
     case "RESET_STATE":
       return initialState;
     default:

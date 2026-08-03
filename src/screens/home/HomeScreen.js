@@ -23,6 +23,7 @@ function HomeScreen({ navigation }) {
           personName: p.name,
           emoji: p.avatarEmoji,
           color: p.avatarColor,
+          photoUri: p.photoUri,
           label: o.label,
           date: o.date,
           days: daysUntil(o.date)
@@ -66,6 +67,7 @@ function HomeScreen({ navigation }) {
     personName={item.personName}
     emoji={item.emoji}
     color={item.color}
+    photoUri={item.photoUri}
     occasionLabel={item.label}
     daysLeft={item.days}
     onPress={() => navigation.navigate("People", { screen: "PersonProfile", params: { personId: item.personId } })}
@@ -111,6 +113,18 @@ function HomeScreen({ navigation }) {
         label: "Budget",
         emoji: "\u{1F4B0}",
         onPress: () => navigation.navigate("BudgetTracker")
+      },
+      {
+        key: "wishlist",
+        label: "Wishlist",
+        emoji: "\u{1F49D}",
+        onPress: () => navigation.navigate("Wishlist")
+      },
+      {
+        key: "gift-history",
+        label: "Gift History",
+        emoji: "\u{1F4DC}",
+        onPress: () => navigation.navigate("GiftHistory")
       }
     ]}
   />
