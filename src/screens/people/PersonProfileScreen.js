@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "../../hooks/useTheme";
@@ -15,7 +15,7 @@ const tabs = ["Overview", "Occasions", "Gifts", "Notes"];
 function PersonProfileScreen({ route, navigation }) {
   const { personId } = route.params;
   const theme = useTheme();
-  const { state } = useAppStore();
+  const { state, dispatch } = useAppStore();
   const [tab, setTab] = useState("Overview");
   const person = state.people.find((p) => p.id === personId);
   if (!person) {
@@ -23,6 +23,23 @@ function PersonProfileScreen({ route, navigation }) {
         <EmptyState emoji="🙈" title="Person not found" />
       </View>;
   }
+  const confirmDelete = () => {
+    Alert.alert(
+      "Remove Person",
+      `Remove ${person.name} from your list? This cannot be undone.`,
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Remove",
+          style: "destructive",
+          onPress: () => {
+            dispatch({ type: "REMOVE_PERSON", id: personId });
+            navigation.goBack();
+          }
+        }
+      ]
+    );
+  };
   const sortedOccasions = [...person.occasions].sort((a, b) => daysUntil(a.date) - daysUntil(b.date));
   const nextOccasion = sortedOccasions[0];
   const relatedSuggestions = giftSuggestions.filter((g) => g.personId === person.id);
@@ -32,6 +49,9 @@ function PersonProfileScreen({ route, navigation }) {
       <LinearGradient colors={[theme.colors.primary, theme.colors.primaryLight]} style={styles.hero}>
         <Pressable onPress={() => navigation.goBack()} style={styles.backButton} hitSlop={12}>
           <Ionicons name="chevron-back" size={26} color="#fff" />
+        </Pressable>
+        <Pressable onPress={confirmDelete} style={styles.deleteButton} hitSlop={12}>
+          <Ionicons name="trash-outline" size={22} color="#fff" />
         </Pressable>
         <Avatar emoji={person.avatarEmoji} color="#ffffff77" photoUri={person.photoUri} size={80} />
         <Text style={styles.name}>{person.name}</Text>
@@ -144,6 +164,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 56,
     left: 20
+  },
+  deleteButton: {
+    position: "absolute",
+    top: 56,
+    right: 20
   },
   name: {
     color: "#fff",

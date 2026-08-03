@@ -29,6 +29,26 @@ function GiftDetailScreen({ route, navigation }) {
     });
     Alert.alert("Saved!", `${gift.name} was added to the wishlist.`);
   };
+  const recordAsGiven = () => {
+    const personId = gift.personId ?? state.people[0]?.id;
+    if (!personId) {
+      Alert.alert("No people found", "Add a person first to record a gift.");
+      return;
+    }
+    dispatch({
+      type: "ADD_GIFT_HISTORY",
+      value: {
+        id: `gh-${Date.now()}`,
+        personId,
+        giftName: gift.name,
+        occasion: "Gift",
+        date: new Date().toISOString().slice(0, 10),
+        price: gift.price,
+        status: "given"
+      }
+    });
+    Alert.alert("Recorded!", `${gift.name} was added to gift history.`);
+  };
   return <ScrollView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <LinearGradient colors={gift.gradient} style={styles.hero}>
         <Pressable onPress={() => navigation.goBack()} style={styles.backButton} hitSlop={12}>
@@ -62,6 +82,13 @@ function GiftDetailScreen({ route, navigation }) {
     variant="secondary"
     onPress={() => Alert.alert("Redirecting\u2026", "This would open the retailer link.")}
     icon={<Ionicons name="cart-outline" size={18} color="#fff" />}
+  />
+          <View style={{ height: 12 }} />
+          <Button
+    title="Record as Given"
+    variant="ghost"
+    onPress={recordAsGiven}
+    icon={<Ionicons name="checkmark-circle-outline" size={18} color={undefined} />}
   />
         </View>
 

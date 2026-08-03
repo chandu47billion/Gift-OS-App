@@ -122,6 +122,10 @@ function reducer(state, action) {
           (w) => w.id === action.id ? { ...w, purchased: !w.purchased } : w
         )
       };
+    case "REMOVE_WISHLIST_ITEM":
+      return { ...state, wishlist: state.wishlist.filter((w) => w.id !== action.id) };
+    case "ADD_GIFT_HISTORY":
+      return { ...state, giftHistory: [action.value, ...state.giftHistory] };
     case "ADD_BUDGET_ENTRY":
       return { ...state, budget: [action.value, ...state.budget] };
     case "TOGGLE_REMINDER":
