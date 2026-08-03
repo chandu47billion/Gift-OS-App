@@ -3,7 +3,7 @@ import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-na
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useTheme } from "../../hooks/useTheme";
 import { useAppStore } from "../../store/useAppStore";
-import { relationshipFilters } from "../../data/mockData";
+import { relationshipFilters } from "../../data/constants";
 import PersonCard from "../../components/people/PersonCard";
 import EmptyState from "../../components/common/EmptyState";
 import { daysUntil } from "../../utils/date";

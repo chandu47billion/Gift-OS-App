@@ -4,7 +4,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "../../hooks/useTheme";
 import { useAppStore } from "../../store/useAppStore";
-import { giftSuggestions } from "../../data/mockData";
 import { daysUntil, formatDate } from "../../utils/date";
 import Avatar from "../../components/common/Avatar";
 import Badge from "../../components/common/Badge";
@@ -23,6 +22,7 @@ function PersonProfileScreen({ route, navigation }) {
         <EmptyState emoji="🙈" title="Person not found" />
       </View>;
   }
+  const { giftSuggestions } = state;
   const confirmDelete = () => {
     Alert.alert(
       "Remove Person",
@@ -95,7 +95,7 @@ function PersonProfileScreen({ route, navigation }) {
     price={g.price}
     emoji={g.emoji}
     gradient={g.gradient}
-    onPress={() => navigation.navigate("Discover", { screen: "GiftDetail", params: { giftId: g.id } })}
+    onPress={() => navigation.navigate("MainTabs", { screen: "Discover", params: { screen: "GiftDetail", params: { giftId: g.id } } })}
   />)}
             </ScrollView>
             <View style={{ marginTop: 16 }}>

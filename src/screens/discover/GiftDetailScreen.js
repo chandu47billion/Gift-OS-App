@@ -3,7 +3,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "../../hooks/useTheme";
 import { useAppStore } from "../../store/useAppStore";
-import { giftSuggestions } from "../../data/mockData";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
 import GiftSuggestionCard from "../../components/home/GiftSuggestionCard";
@@ -11,6 +10,7 @@ function GiftDetailScreen({ route, navigation }) {
   const { giftId } = route.params;
   const theme = useTheme();
   const { state, dispatch } = useAppStore();
+  const { giftSuggestions } = state;
   const gift = giftSuggestions.find((g) => g.id === giftId);
   const related = giftSuggestions.filter((g) => g.id !== giftId).slice(0, 4);
   if (!gift) return null;
