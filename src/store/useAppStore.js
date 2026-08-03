@@ -6,7 +6,8 @@ import {
   giftHistory as seedHistory,
   budget as seedBudget,
   reminders as seedReminders,
-  notifications as seedNotifications
+  notifications as seedNotifications,
+  giftSuggestions as seedGiftSuggestions
 } from "../data/mockData";
 const APP_STATE_STORAGE_KEY = "@gift-os/app-state";
 const APP_STATE_SCHEMA_VERSION = 1;
@@ -20,6 +21,7 @@ const initialState = {
   budget: seedBudget,
   reminders: seedReminders,
   notifications: seedNotifications,
+  giftSuggestions: seedGiftSuggestions,
   isPremium: false,
   userName: "Alex Rivera",
   userEmail: "alex.rivera@example.com",
@@ -54,6 +56,7 @@ function pickPersistedState(state) {
     budget: Array.isArray(state?.budget) ? state.budget : initialState.budget,
     reminders: Array.isArray(state?.reminders) ? state.reminders : initialState.reminders,
     notifications: Array.isArray(state?.notifications) ? state.notifications : initialState.notifications,
+    giftSuggestions: Array.isArray(state?.giftSuggestions) ? state.giftSuggestions : initialState.giftSuggestions,
     themePreference: safeTheme,
     isAuthenticated: typeof state?.isAuthenticated === "boolean" ? state.isAuthenticated : initialState.isAuthenticated,
     hasOnboarded: typeof state?.hasOnboarded === "boolean" ? state.hasOnboarded : initialState.hasOnboarded,

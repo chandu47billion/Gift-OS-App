@@ -2,11 +2,14 @@ import { useMemo, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useTheme } from "../../hooks/useTheme";
-import { giftSuggestions, discoverCategories } from "../../data/mockData";
+import { useAppStore } from "../../store/useAppStore";
+import { discoverCategories } from "../../data/constants";
 import GiftCard from "../../components/gifts/GiftCard";
 import EmptyState from "../../components/common/EmptyState";
 function DiscoverScreen({ navigation }) {
   const theme = useTheme();
+  const { state } = useAppStore();
+  const { giftSuggestions } = state;
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
   const filtered = useMemo(() => {

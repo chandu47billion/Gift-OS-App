@@ -10,6 +10,7 @@ import ReminderSettingsScreen from "../screens/gifts/ReminderSettingsScreen";
 import GreetingCreatorScreen from "../screens/gifts/GreetingCreatorScreen";
 import PremiumScreen from "../screens/premium/PremiumScreen";
 import SettingsScreen from "../screens/profile/SettingsScreen";
+import PersonProfileScreen from "../screens/people/PersonProfileScreen";
 import { useAppStore } from "../store/useAppStore";
 const Stack = createNativeStackNavigator();
 function HydrationGate() {
@@ -20,6 +21,7 @@ function HydrationGate() {
 function RootNavigator() {
   return <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainTabs" component={MainNavigator} />
+      <Stack.Screen name="PersonProfile" component={PersonProfileScreen} />
       <Stack.Screen name="NotificationCenter" component={NotificationCenterScreen} options={{ presentation: "modal" }} />
       <Stack.Screen name="Wishlist" component={WishlistScreen} />
       <Stack.Screen name="GiftHistory" component={GiftHistoryScreen} />

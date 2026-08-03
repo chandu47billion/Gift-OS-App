@@ -3,7 +3,6 @@ import { ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useTheme } from "../../hooks/useTheme";
 import { useAppStore } from "../../store/useAppStore";
-import { giftSuggestions } from "../../data/mockData";
 import { daysUntil } from "../../utils/date";
 import EventCard from "../../components/home/EventCard";
 import CountdownCard from "../../components/home/CountdownCard";
@@ -19,7 +18,7 @@ function getGreeting() {
 function HomeScreen({ navigation }) {
   const theme = useTheme();
   const { state } = useAppStore();
-  const { people, reminders, isPremium, userName, notifications } = state;
+  const { people, reminders, isPremium, userName, notifications, giftSuggestions } = state;
   const hasUnread = notifications.some((n) => !n.read);
   const upcoming = useMemo(() => {
     const list = [];
@@ -77,7 +76,7 @@ function HomeScreen({ navigation }) {
     photoUri={item.photoUri}
     occasionLabel={item.label}
     daysLeft={item.days}
-    onPress={() => navigation.navigate("People", { screen: "PersonProfile", params: { personId: item.personId } })}
+    onPress={() => navigation.navigate("PersonProfile", { personId: item.personId })}
   />)}
       </ScrollView>
 
