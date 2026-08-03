@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { ActivityIndicator, View } from "react-native";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
 import NotificationCenterScreen from "../screens/home/NotificationCenterScreen";
@@ -11,6 +12,11 @@ import PremiumScreen from "../screens/premium/PremiumScreen";
 import SettingsScreen from "../screens/profile/SettingsScreen";
 import { useAppStore } from "../store/useAppStore";
 const Stack = createNativeStackNavigator();
+function HydrationGate() {
+  return <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#fff" }}>
+      <ActivityIndicator size="small" color="#6C5CE7" />
+    </View>;
+}
 function RootNavigator() {
   return <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainTabs" component={MainNavigator} />
@@ -25,7 +31,10 @@ function RootNavigator() {
     </Stack.Navigator>;
 }
 function AppNavigator() {
-  const { state } = useAppStore();
+  const { state, isHydrated } = useAppStore();
+  if (!isHydrated) {
+    return <HydrationGate />;
+  }
   return state.isAuthenticated ? <RootNavigator /> : <AuthNavigator />;
 }
 export {

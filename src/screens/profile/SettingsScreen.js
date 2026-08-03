@@ -11,9 +11,21 @@ const themeOptions = [
 ];
 function SettingsScreen({ navigation }) {
   const theme = useTheme();
-  const { state, dispatch } = useAppStore();
+  const { state, dispatch, resetPersistedState } = useAppStore();
   const [analyticsEnabled, setAnalyticsEnabled] = useState(true);
   const [autoBackup, setAutoBackup] = useState(true);
+  const confirmResetPersistedData = () => {
+    Alert.alert("Reset Local App Data", "This will clear all locally saved app data and restart onboarding.", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Reset",
+        style: "destructive",
+        onPress: async () => {
+          await resetPersistedState();
+        }
+      }
+    ]);
+  };
   return <ScrollView style={{ flex: 1, backgroundColor: theme.colors.background }} contentContainerStyle={{ paddingBottom: 60 }}>
       <View style={styles.header}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={12}>
@@ -97,6 +109,17 @@ function SettingsScreen({ navigation }) {
             </View>
           </Card>
         </Pressable>
+        {__DEV__ ? <View style={{ marginTop: 24 }}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Developer</Text>
+            <Pressable onPress={confirmResetPersistedData}>
+              <Card>
+                <View style={styles.switchRow}>
+                  <Text style={{ color: theme.colors.error }}>Reset persisted app data</Text>
+                  <Ionicons name="trash-outline" size={18} color={theme.colors.error} />
+                </View>
+              </Card>
+            </Pressable>
+          </View> : null}
       </View>
     </ScrollView>;
 }
