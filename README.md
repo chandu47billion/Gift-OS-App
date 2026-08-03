@@ -1,6 +1,6 @@
 # 🎁 Gift OS
 
-A premium, mobile-first gifting companion built with **React Native (Expo)** and **TypeScript**. Gift OS helps you remember every birthday, anniversary, and milestone in your life, and takes the stress out of finding the perfect gift with AI-style suggestions, budgeting tools, and greeting generation.
+A premium, mobile-first gifting companion built with **React Native CLI (bare React Native)** and **JavaScript**. Gift OS helps you remember every birthday, anniversary, and milestone in your life, and takes the stress out of finding the perfect gift with AI-style suggestions, budgeting tools, and greeting generation.
 
 ## ✨ Features
 
@@ -17,32 +17,32 @@ A premium, mobile-first gifting companion built with **React Native (Expo)** and
 ## 🏗 Architecture
 
 ```
-App.tsx                     Root component: providers + navigation container
+App.js                     Root component: providers + navigation container
 src/
   design-system/
-    tokens.ts                Design tokens: colors, spacing, radii, typography, shadows
-    theme.ts                 Light/dark theme objects built from tokens
+    tokens.js                Design tokens: colors, spacing, radii, typography, shadows
+    theme.js                 Light/dark theme objects built from tokens
   hooks/
     useTheme.ts               Resolves the active theme from user preference + system scheme
   store/
-    useAppStore.tsx           Global app state via React Context + useReducer
+    useAppStore.js           Global app state via React Context + useReducer
   data/
-    mockData.ts                Realistic seed data (people, gifts, wishlist, history, budget…)
+    mockData.js                Realistic seed data (people, gifts, wishlist, history, budget…)
   types/
-    index.ts                   Shared TypeScript domain types
+    index.js                   Shared JavaScript domain types
   utils/
-    date.ts                    Date helpers (days-until, formatting, month names)
+    date.js                    Date helpers (days-until, formatting, month names)
   components/
     common/                    Button, Card, Input, Avatar, Badge, EmptyState
     home/                       EventCard, CountdownCard, GiftSuggestionCard, QuickActions
     people/                     PersonCard
     gifts/                      GiftCard
   navigation/
-    AppNavigator.tsx            Root stack: auth flow vs. main app + full-screen detail routes
-    AuthNavigator.tsx           Splash → Onboarding → Auth → Permissions
-    MainNavigator.tsx           Bottom tab bar (Home, Calendar, Discover, People, Profile)
-    PeopleNavigator.tsx         People list → Add person → Person profile
-    DiscoverNavigator.tsx       Discover → Gift detail
+    AppNavigator.js            Root stack: auth flow vs. main app + full-screen detail routes
+    AuthNavigator.js           Splash → Onboarding → Auth → Permissions
+    MainNavigator.js           Bottom tab bar (Home, Calendar, Discover, People, Profile)
+    PeopleNavigator.js         People list → Add person → Person profile
+    DiscoverNavigator.js       Discover → Gift detail
   screens/
     auth/                       SplashScreen, OnboardingScreen, AuthScreen, PermissionsScreen
     home/                        HomeScreen, NotificationCenterScreen
@@ -62,37 +62,34 @@ src/
 
 ### State management
 
-Global state (people, wishlist, gift history, budget, reminders, notifications, theme preference, auth/premium flags) lives in `useAppStore.tsx`, a React Context + `useReducer` store seeded from `data/mockData.ts`. Screens read state and dispatch actions like `ADD_PERSON`, `TOGGLE_WISHLIST_PURCHASED`, `SET_THEME`, etc.
+Global state (people, wishlist, gift history, budget, reminders, notifications, theme preference, auth/premium flags) lives in `useAppStore.js`, a React Context + `useReducer` store seeded from `data/mockData.js`. Screens read state and dispatch actions like `ADD_PERSON`, `TOGGLE_WISHLIST_PURCHASED`, `SET_THEME`, etc.
 
 ### Design system
 
-All screens draw their colors, spacing, radii, and shadows from `design-system/tokens.ts` via `design-system/theme.ts` and the `useTheme()` hook, so light/dark mode and visual consistency stay centralized.
+All screens draw their colors, spacing, radii, and shadows from `design-system/tokens.js` via `design-system/theme.js` and the `useTheme()` hook, so light/dark mode and visual consistency stay centralized.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 - Node.js 18+ and npm
-- The [Expo Go](https://expo.dev/go) app on your phone (easiest way to run without native builds), or an iOS/Android simulator
+- Android Studio + Android SDK (for Android builds)
+- Xcode + CocoaPods (for iOS builds on macOS)
 
 ### Install & run
 
 ```bash
 npm install
-npm start        # opens Expo Dev Tools / QR code
-# or target a platform directly
-npm run ios
+npm install
+npm run start
 npm run android
-npm run web
+# iOS (macOS only)
+cd ios && bundle install && bundle exec pod install && cd ..
+npm run ios
 ```
 
-Scan the QR code with Expo Go (Android) or the Camera app (iOS) to launch Gift OS on your device.
+Run on a simulator/emulator or a connected device using the React Native CLI commands above.
 
-### Type-checking
-
-```bash
-npx tsc --noEmit
-```
 
 ## 📦 Key Dependencies
 
@@ -100,22 +97,20 @@ npx tsc --noEmit
 |---|---|
 | `@react-navigation/*` | Native stack + bottom tabs navigation |
 | `react-native-screens`, `react-native-safe-area-context` | Navigation performance & safe areas |
-| `expo-linear-gradient` | Gradient headers & hero sections |
-| `@expo/vector-icons` | Iconography (Ionicons) |
+| `react-native-linear-gradient` | Gradient headers & hero sections |
+| `react-native-vector-icons` | Iconography (Ionicons) |
 | `react-native-gesture-handler` | Gesture support required by navigation |
-| `expo-font` | Font loading support |
-| `@react-native-async-storage/async-storage` | Local persistence groundwork |
-| `react-native-reanimated` (+ `react-native-worklets`) | Smooth animations |
-
+| | `@react-native-async-storage/async-storage` | Local persistence groundwork |
+| 
 ## 🎨 Design notes
 
 - All imagery uses gradient placeholders + emoji instead of network images, keeping the app fully offline-friendly and dependency-light.
-- Dates are plain text inputs (`YYYY-MM-DD`) rather than native date pickers, avoiding any dependency that requires custom native builds — everything runs in the standard Expo Go / managed workflow.
+- Dates are plain text inputs (`YYYY-MM-DD`) rather than native date pickers, keeping the app dependency footprint small.
 - Every screen is fully wired into navigation — there are no dead-end buttons.
 
 ## 🗺 Roadmap ideas
 
 - Real authentication & backend sync (Supabase/Firebase)
-- Push notifications via `expo-notifications`
-- Native date/time pickers once moving to a custom dev client
+- Push notifications via a native-compatible notifications library
+- Native date/time pickers
 - Real product search/affiliate integration on the Discover tab
