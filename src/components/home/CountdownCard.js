@@ -6,13 +6,14 @@ function CountdownCard({
   personName,
   emoji,
   color,
+  photoUri,
   occasionLabel,
   daysLeft,
   onPress
 }) {
   const theme = useTheme();
   return <Card onPress={onPress} style={styles.card}>
-      <Avatar emoji={emoji} color={color} size={48} />
+      <Avatar emoji={emoji} color={color} photoUri={photoUri} size={48} />
       <Text style={[styles.name, { color: theme.colors.text }]} numberOfLines={1}>
         {personName}
       </Text>

@@ -7,7 +7,7 @@ function PersonCard({ person, nextOccasionLabel, onPress }) {
   const theme = useTheme();
   return <Card onPress={onPress} style={styles.card}>
       <View style={styles.row}>
-        <Avatar emoji={person.avatarEmoji} color={person.avatarColor} size={54} />
+        <Avatar emoji={person.avatarEmoji} color={person.avatarColor} photoUri={person.photoUri} size={54} />
         <View style={{ marginLeft: 12, flex: 1 }}>
           <Text style={[styles.name, { color: theme.colors.text }]} numberOfLines={1}>
             {person.name}

@@ -33,7 +33,7 @@ function PersonProfileScreen({ route, navigation }) {
         <Pressable onPress={() => navigation.goBack()} style={styles.backButton} hitSlop={12}>
           <Ionicons name="chevron-back" size={26} color="#fff" />
         </Pressable>
-        <Avatar emoji={person.avatarEmoji} color="#ffffff77" size={80} />
+        <Avatar emoji={person.avatarEmoji} color="#ffffff77" photoUri={person.photoUri} size={80} />
         <Text style={styles.name}>{person.name}</Text>
         <View style={{ marginTop: 6 }}>
           <Badge label={person.relationship} variant="neutral" />

@@ -1,11 +1,11 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useTheme } from "../../hooks/useTheme";
 import { useAppStore } from "../../store/useAppStore";
 import Card from "../../components/common/Card";
 function BudgetTrackerScreen({ navigation }) {
   const theme = useTheme();
-  const { state } = useAppStore();
+  const { state, dispatch } = useAppStore();
   const totalBudget = state.budget.reduce((sum, b) => sum + b.amount, 0);
   const totalSpent = state.budget.reduce((sum, b) => sum + b.spent, 0);
   const percent = totalBudget > 0 ? Math.min(100, Math.round(totalSpent / totalBudget * 100)) : 0;
@@ -69,7 +69,7 @@ function BudgetTrackerScreen({ navigation }) {
   })}
       </View>
 
-      <Pressable style={[styles.fab, { backgroundColor: theme.colors.primary }, theme.shadows.lg]}>
+      <Pressable onPress={addBudgetEntry} style={[styles.fab, { backgroundColor: theme.colors.primary }, theme.shadows.lg]}>
         <Ionicons name="add" size={28} color="#fff" />
       </Pressable>
     </ScrollView>;
@@ -158,3 +158,20 @@ const styles = StyleSheet.create({
 export {
   BudgetTrackerScreen as default
 };
+  const addBudgetEntry = () => {
+    const person = state.people[0];
+    if (!person) {
+      Alert.alert("No people found", "Add a person first to create a budget entry.");
+      return;
+    }
+    dispatch({
+      type: "ADD_BUDGET_ENTRY",
+      value: {
+        id: `b-${Date.now()}`,
+        personId: person.id,
+        label: "New Budget",
+        amount: 100,
+        spent: 0
+      }
+    });
+  };

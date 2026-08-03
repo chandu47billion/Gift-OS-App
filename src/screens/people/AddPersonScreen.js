@@ -42,6 +42,7 @@ function AddPersonScreen({ navigation }) {
   const [relationship, setRelationship] = useState("Friend");
   const [avatarEmoji, setAvatarEmoji] = useState(avatarEmojis[0]);
   const [avatarColor, setAvatarColor] = useState(avatarColors[0]);
+  const [photoUri, setPhotoUri] = useState("");
   const [birthday, setBirthday] = useState("");
   const [anniversary, setAnniversary] = useState("");
   const [interests, setInterests] = useState([]);
@@ -71,15 +72,35 @@ function AddPersonScreen({ navigation }) {
     }
   };
   const save = () => {
+    const occasions = [];
+    if (birthday) {
+      occasions.push({
+        id: `o-bday-${Date.now()}`,
+        type: "Birthday",
+        label: `${name || "New Person"}'s Birthday`,
+        date: birthday,
+        recurring: true
+      });
+    }
+    if (anniversary) {
+      occasions.push({
+        id: `o-ann-${Date.now()}`,
+        type: "Anniversary",
+        label: `${name || "New Person"}'s Anniversary`,
+        date: anniversary,
+        recurring: true
+      });
+    }
     const newPerson = {
       id: `p-${Date.now()}`,
       name: name || "New Person",
       relationship,
       avatarEmoji,
       avatarColor,
+      photoUri: photoUri || void 0,
       birthday: birthday || void 0,
       anniversary: anniversary || void 0,
-      occasions: birthday ? [{ id: `o-${Date.now()}`, type: "Birthday", label: `${name || "New Person"}'s Birthday`, date: birthday, recurring: true }] : [],
+      occasions,
       interests,
       sizes: sizes || void 0,
       budgetMin: budgetMin ? Number(budgetMin) : void 0,
@@ -134,6 +155,7 @@ function AddPersonScreen({ navigation }) {
     ]}
   />)}
             </View>
+            <Input label="Photo URL (optional)" value={photoUri} onChangeText={setPhotoUri} placeholder="https://..." />
             <Input label="Full Name" value={name} onChangeText={setName} placeholder="e.g. Taylor Smith" />
             <Text style={[styles.label, { color: theme.colors.textSecondary }]}>Relationship</Text>
             <View style={styles.rowWrap}>

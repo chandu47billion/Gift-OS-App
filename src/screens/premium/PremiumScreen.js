@@ -79,7 +79,10 @@ function PremiumScreen({ navigation }) {
         <View style={{ marginTop: 24 }}>
           <Button title={`Subscribe \u2014 ${plan === "annual" ? "$39.99/yr" : "$4.99/mo"}`} onPress={subscribe} />
         </View>
-        <Pressable style={{ alignItems: "center", marginTop: 16 }}>
+        <Pressable
+          style={{ alignItems: "center", marginTop: 16 }}
+          onPress={() => Alert.alert("Restore Purchases", "Your previous purchases have been restored.")}
+        >
           <Text style={{ color: theme.colors.textSecondary, fontSize: 13 }}>Restore purchases</Text>
         </Pressable>
       </View>

@@ -17,6 +17,8 @@ function ProfileScreen({ navigation }) {
   const rows = [
     { icon: "color-palette-outline", label: "Appearance & Settings", onPress: () => navigation.navigate("Settings") },
     { icon: "notifications-outline", label: "Notification Preferences", onPress: () => navigation.navigate("ReminderSettings") },
+    { icon: "heart-outline", label: "Wishlist", onPress: () => navigation.navigate("Wishlist") },
+    { icon: "time-outline", label: "Gift History", onPress: () => navigation.navigate("GiftHistory") },
     { icon: "lock-closed-outline", label: "Privacy", onPress: () => navigation.navigate("Settings", { section: "privacy" }) },
     { icon: "cloud-upload-outline", label: "Backup & Sync", onPress: () => navigation.navigate("Settings", { section: "backup" }) },
     {
