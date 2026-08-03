@@ -69,13 +69,21 @@ function PeopleListScreen({ navigation }) {
     data={filtered}
     keyExtractor={(item) => item.id}
     contentContainerStyle={{ padding: 20, paddingBottom: 100 }}
-    ListEmptyComponent={<EmptyState
-      emoji="🔍"
-      title="No people found"
-      subtitle="Try a different search or filter, or add someone new."
-      ctaLabel="Add Person"
-      onPressCta={() => navigation.navigate("AddPerson")}
-    />}
+    ListEmptyComponent={state.people.length === 0
+      ? <EmptyState
+          emoji="👥"
+          title="No people yet"
+          subtitle="Add someone special to start tracking gifts and occasions."
+          ctaLabel="Add Person"
+          onPressCta={() => navigation.navigate("AddPerson")}
+        />
+      : <EmptyState
+          emoji="🔍"
+          title="No people found"
+          subtitle="Try a different search or filter, or add someone new."
+          ctaLabel="Add Person"
+          onPressCta={() => navigation.navigate("AddPerson")}
+        />}
     renderItem={({ item }) => <PersonCard
       person={item}
       nextOccasionLabel={nextOccasionLabel(item.id)}

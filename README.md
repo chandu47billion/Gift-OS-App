@@ -27,7 +27,7 @@ src/
   store/
     useAppStore.js           Global app state via React Context + useReducer
   data/
-    mockData.js                Realistic seed data (people, gifts, wishlist, history, budget…)
+    constants.js               UI constants (relationship filters, discover categories)
   types/
     index.js                   Shared JavaScript domain types
   utils/
@@ -62,7 +62,7 @@ src/
 
 ### State management
 
-Global state (people, wishlist, gift history, budget, reminders, notifications, theme preference, auth/premium flags) lives in `useAppStore.js`, a React Context + `useReducer` store seeded from `data/mockData.js`. Screens read state and dispatch actions like `ADD_PERSON`, `TOGGLE_WISHLIST_PURCHASED`, `SET_THEME`, etc.
+Global state (people, wishlist, gift history, budget, reminders, notifications, theme preference, auth/premium flags) lives in `useAppStore.js`, a React Context + `useReducer` store that starts empty. All data is created by the user at runtime. Screens read state and dispatch actions like `ADD_PERSON`, `TOGGLE_WISHLIST_PURCHASED`, `SET_THEME`, etc.
 
 ### Design system
 
